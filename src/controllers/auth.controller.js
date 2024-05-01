@@ -1,18 +1,14 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from '../libs/jwt.js';
-
-const NUMBER_OF_SALT_ROUNDS = 10;
-
-const TOKEN_COOKIE_NAME = 'token';
-
-// It is not advisable to use such descriptive messages for these cases
-const INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password';
-
-const USER_NOT_FOUND = 'User not found';
-
-const BAD_REQUEST_STATUS_CODE = 400;
-const OK_STATUS_CODE = 200;
+import {
+  BAD_REQUEST_STATUS_CODE,
+  NUMBER_OF_SALT_ROUNDS,
+  OK_STATUS_CODE,
+  TOKEN_COOKIE_NAME,
+  USER_NOT_FOUND,
+  INVALID_EMAIL_OR_PASSWORD,
+} from './constants.js';
 
 export const register = async (req, res) => {
   try {
@@ -86,4 +82,22 @@ export const logout = (_, res) => {
   res.clearCookie(TOKEN_COOKIE_NAME);
 
   return res.sendStatus(OK_STATUS_CODE);
+};
+
+export const profile = async (req, res) => {
+  const userFound = await User.findById(req.user.id);
+
+  if (!userFound) {
+    return res.status(BAD_REQUEST_STATUS_CODE).json({
+      error: USER_NOT_FOUND,
+    });
+  }
+
+  return res.json({
+    id: userFound._id,
+    email: userFound.email,
+    username: userFound.username,
+    createdAt: userFound.createdAt,
+    updatedAt: userFound.updatedAt,
+  });
 };
