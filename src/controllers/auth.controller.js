@@ -8,6 +8,7 @@ import {
   TOKEN_COOKIE_NAME,
   USER_NOT_FOUND,
   INVALID_EMAIL_OR_PASSWORD,
+  NOT_FOUND_STATUS_CODE,
 } from './constants.js';
 
 export const register = async (req, res) => {
@@ -88,7 +89,7 @@ export const profile = async (req, res) => {
   const userFound = await User.findById(req.user.id);
 
   if (!userFound) {
-    return res.status(BAD_REQUEST_STATUS_CODE).json({
+    return res.status(NOT_FOUND_STATUS_CODE).json({
       error: USER_NOT_FOUND,
     });
   }
