@@ -8,6 +8,8 @@ import {
   deleteTask,
   updateTask,
 } from '../controllers/tasks.controller.js';
+import { validateSchema } from '../middlewares/validator.middleware.js';
+import { createTaskSchema } from '../schemas/task.schema.js';
 
 const router = Router();
 
@@ -15,7 +17,12 @@ router.get(TASKS_ROUTE, authRequired, getTasks);
 
 router.get(`${TASKS_ROUTE}/:id`, authRequired, getTask);
 
-router.post(TASKS_ROUTE, authRequired, createTask);
+router.post(
+  TASKS_ROUTE,
+  authRequired,
+  validateSchema(createTaskSchema),
+  createTask
+);
 
 router.delete(`${TASKS_ROUTE}/:id`, authRequired, deleteTask);
 

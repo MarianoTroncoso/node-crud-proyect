@@ -12,12 +12,14 @@ import {
   PROFILE_ROUTE,
 } from './constants.js';
 import { authRequired } from '../middlewares/validateToken.js';
+import { validateSchema } from '../middlewares/validator.middleware.js';
+import { registerSchema, loginSchema } from '../schemas/auth.schema.js';
 
 const router = Router();
 
-router.post(REGISTER_ROUTE, register);
+router.post(REGISTER_ROUTE, validateSchema(registerSchema), register);
 
-router.post(LOGIN_ROUTE, login);
+router.post(LOGIN_ROUTE, validateSchema(loginSchema), login);
 
 router.post(LOGOUT_ROUTE, logout);
 
