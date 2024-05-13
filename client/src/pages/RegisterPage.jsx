@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/useAuth';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { TASKS_ROUTE } from '../../../src/routes/constants';
 
 const RegisterPage = () => {
@@ -46,7 +46,7 @@ const RegisterPage = () => {
           className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
           placeholder="Email"
         />
-        {errors.username && <p className="text-red-500">Email is required</p>}
+        {errors.email && <p className="text-red-500">Email is required</p>}
         <input
           type="password"
           {...register('password', { required: true })}
@@ -58,6 +58,13 @@ const RegisterPage = () => {
         )}
         <button type="submit">Register</button>
       </form>
+
+      <p className="flex gap-x-2 mt-5 justify-between ">
+        Already have an account?{' '}
+        <Link className="text-sky-500" to="/login">
+          Login
+        </Link>
+      </p>
     </div>
   );
 };
