@@ -12,13 +12,19 @@ import {
 } from './constants.js';
 
 export const register = async (req, res) => {
+  const { email, username } = req.body;
+
   try {
+    const userFound = await User.findOne({ email });
+
+    if (userFound) {
+      return res.status(BAD_REQUEST_STATUS_CODE).json(['Email already exists']);
+    }
+
     const passwordHash = await bcrypt.hash(
       req.body.password,
       NUMBER_OF_SALT_ROUNDS
     );
-
-    const { email, username } = req.body;
 
     const newUser = new User({
       email,

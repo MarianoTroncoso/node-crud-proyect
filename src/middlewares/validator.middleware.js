@@ -5,8 +5,8 @@ export const validateSchema = (schema) => (req, res, next) => {
     schema.parse(req.body);
     next();
   } catch (error) {
-    return res.status(BAD_REQUEST_STATUS_CODE).json({
-      error: error.errors.map((error) => error.message),
-    });
+    return res
+      .status(BAD_REQUEST_STATUS_CODE)
+      .json(error.errors.map((error) => error.message));
   }
 };
