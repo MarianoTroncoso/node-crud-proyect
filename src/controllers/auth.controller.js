@@ -9,7 +9,11 @@ import {
   USER_NOT_FOUND,
   INVALID_EMAIL_OR_PASSWORD,
   NOT_FOUND_STATUS_CODE,
+  UNAUTHORIZED_STAUS_CODE,
+  UNAUTHORIZED_ERROR,
 } from './constants.js';
+import jwt from 'jsonwebtoken';
+import { TOKEN_SECRET } from '../config.js';
 
 export const register = async (req, res) => {
   const { email, username } = req.body;
@@ -106,5 +110,37 @@ export const profile = async (req, res) => {
     username: userFound.username,
     createdAt: userFound.createdAt,
     updatedAt: userFound.updatedAt,
+  });
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(UNAUTHORIZED_STAUS_CODE).json({
+      error: UNAUTHORIZED_ERROR,
+    });
+  }
+
+  jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+    if (err) {
+      return res.status(UNAUTHORIZED_STAUS_CODE).json({
+        error: UNAUTHORIZED_ERROR,
+      });
+    }
+
+    const userFound = await User.findById(user.id);
+
+    if (!userFound) {
+      return res.status(UNAUTHORIZED_STAUS_CODE).json({
+        error: UNAUTHORIZED_ERROR,
+      });
+    }
+
+    return res.json({
+      id: userFound._id,
+      email: userFound.email,
+      username: userFound.username,
+    });
   });
 };
