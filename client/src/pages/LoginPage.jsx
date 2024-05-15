@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { TASKS_ROUTE } from '../../../src/routes/constants';
 
 const LoginPage = () => {
   const {
@@ -9,11 +11,19 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
-  const { signin, errors: signinErrors } = useAuth();
+  const { signin, errors: signinErrors, isAuthenticated } = useAuth();
 
   const onSubmit = handleSubmit((data) => {
     signin(data);
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(TASKS_ROUTE);
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center">

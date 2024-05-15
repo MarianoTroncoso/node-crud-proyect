@@ -1,11 +1,12 @@
+import { TASKS_ROUTE } from '../../../src/routes/constants';
 import axios from './axios';
 
-export const getTasksRequest = () => axios.get('/tasks');
-export const getTaskRequest = (id) => axios.get(`/tasks/${id}`);
+export const getTasksRequest = () => axios.get(TASKS_ROUTE);
+export const getTaskRequest = (id) => axios.get(`${TASKS_ROUTE}/${id}`);
 
-export const createTaskRequest = (task) => axios.post('/tasks', task);
+export const createTaskRequest = (task) => axios.post(TASKS_ROUTE, task);
 
 export const updateTaskRequest = (task) =>
-  axios.put(`/tasks/${task._id}`, task);
+  axios.put(`${TASKS_ROUTE}/${task._id}`, task);
 
-export const deleteTaskRequest = (id) => axios.delete(`/tasks/${id}`);
+export const deleteTaskRequest = (id) => axios.delete(`${TASKS_ROUTE}/${id}`);
