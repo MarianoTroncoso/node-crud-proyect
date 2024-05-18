@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../src/routes/constants';
+import {
+  LOGIN_ROUTE,
+  REGISTER_ROUTE,
+  TASKS_ROUTE,
+} from '../../../src/routes/constants';
 import { useAuth } from '../context/useAuth';
 
 function Navbar() {
@@ -7,7 +11,7 @@ function Navbar() {
 
   return (
     <nav className="bg-zinc-700 my-3 flex justify-between py-5 px-10 rounded-lg">
-      <Link to="/" className="text-white">
+      <Link to={isAuthenticated ? TASKS_ROUTE : '/'} className="text-white">
         <h1 className="text-2xl font-bold">Tasks Manager</h1>
       </Link>
       <ul className="flex gap-x-2">
@@ -15,7 +19,10 @@ function Navbar() {
           <>
             <li>Welcome {user.username}</li>
             <li>
-              <Link to="/add-task" className="text-white">
+              <Link
+                to="/add-task"
+                className="text-white bg-indigo-500 px-4 py-1 rounded-md"
+              >
                 Add task
               </Link>
             </li>

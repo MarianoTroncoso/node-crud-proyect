@@ -2,6 +2,10 @@ import React from 'react';
 import { useTasks } from '../context/useTasks';
 import { Link } from 'react-router-dom';
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+
 function TaskCard({ task }) {
   const { deleteTask } = useTasks();
 
@@ -16,14 +20,20 @@ function TaskCard({ task }) {
             onClick={() => {
               deleteTask(_id);
             }}
+            className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-md"
           >
             Delete
           </button>
-          <Link to={`/tasks/${_id}`}>Edit</Link>
+          <Link
+            to={`/tasks/${_id}`}
+            className="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md"
+          >
+            Edit
+          </Link>
         </div>
       </header>
       <p className="text-slate-300">{description}</p>
-      <p>{new Date(date).toLocaleDateString()}</p>
+      <p>{dayjs.utc(date).format('DD/MM/YYYY')}</p>
     </div>
   );
 }
