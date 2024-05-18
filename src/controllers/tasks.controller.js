@@ -34,8 +34,8 @@ export const getTask = async (req, res) => {
 
     res.json(foundTask);
   } catch (error) {
-    res.status(BAD_REQUEST_STATUS_CODE).json({
-      error: error.message,
+    res.status(NOT_FOUND_STATUS_CODE).json({
+      error: TASK_NOT_FOUND,
     });
   }
 };
